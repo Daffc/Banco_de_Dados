@@ -4,5 +4,5 @@ select count(C_CUSTKEY)
         select C_CUSTKEY 
         from CUSTOMER 
         left join ORDERS on C_CUSTKEY = O_CUSTKEY 
-        where O_COMMENT = 'special request'
+        where O_COMMENT like '%special request%'
     );
