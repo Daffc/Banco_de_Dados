@@ -6,7 +6,7 @@ typedef struct identificador {
 typedef struct grafo {
     int num_vertices;
     Identificador *identificadores;
-    int arestas;
+    int arcos;
     int *m_adjacencia;
 } Grafo;
 
@@ -14,7 +14,7 @@ typedef struct grafo {
 
 void iniciaGrafo(Grafo *g){
     g -> num_vertices = 0;
-    g -> arestas = 0;
+    g -> arcos = 0;
 }
 
 
@@ -31,8 +31,8 @@ void iniciaMatrizGrafo(Grafo *g){
             g -> m_adjacencia[i * g->num_vertices + j] = 0;
 }
 
-// DEFINE NOVA ARESTA EM GRFO PARA num_vertices "v1" e "v2".
-void defineArestaGrafo(Grafo *g, char *v1, char *v2){
+// DEFINE NOVA ARCO EM GRFO PARA num_vertices "v1" e "v2".
+void defineArcoGrafo(Grafo *g, char *v1, char *v2){
     int i, linha, coluna;
 
     
@@ -44,8 +44,10 @@ void defineArestaGrafo(Grafo *g, char *v1, char *v2){
             coluna = i;
     }
     
-    g->m_adjacencia[(linha *g->num_vertices) + coluna] = 1;
-    g->arestas++;
+    if(!g->m_adjacencia[(linha *g->num_vertices) + coluna]){
+        g->m_adjacencia[(linha *g->num_vertices) + coluna] = 1;
+        g->arcos++;
+    }
 }
 
 void verificaNovoVertice(Grafo *g, char *entrada){
@@ -125,12 +127,12 @@ void imprimeGrafo(Grafo *g){
 
     printf("GRAFO:\n");
     printf("\tNUM_VERTICES: %d\n", g->num_vertices);
-    printf("\tIDENTIFICADORES: %d\n", g->num_vertices);
+    printf("\tIDENTIFICADORES: \n");
     for(i = 0; i < g->num_vertices; i++){
         printf("\t\t%d - %s\n", i, g->identificadores[i].id);
     }
     
-    printf("\tARESTAS: %d\n", g->arestas);
+    printf("\tarcos: %d\n", g->arcos);
 
     for(i = 0; i < g->num_vertices; i++){
         printf("\t\t");
