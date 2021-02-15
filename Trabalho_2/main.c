@@ -24,12 +24,8 @@ int main(){
         elemento = strtok(linha," ");
 
         // RECUPERANDO TRANSIÇÃO
-        elemento = strtok(NULL," ");
-        t_atual = atoi(elemento);
-
-        // ARMAZENANDO MAIOR VALOR DE VERTICE.
-        if(grafo.vertices < t_atual)
-            grafo.vertices = t_atual;        
+        elemento = strtok(NULL," ");      
+        verificaNovoVertice(&grafo, elemento);        
     }
 
     iniciaMatrizGrafo(&grafo);
@@ -69,11 +65,10 @@ int main(){
 
 
 
-    defineArestaGrafo(&grafo, 1, 2);
-    defineArestaGrafo(&grafo, 2, 3);
-    defineArestaGrafo(&grafo, 1, 3);
-    defineArestaGrafo(&grafo, 3, 4);
-    defineArestaGrafo(&grafo, 4, 1);
+    defineArestaGrafo(&grafo, "1", "2");
+    defineArestaGrafo(&grafo, "2", "3");
+    defineArestaGrafo(&grafo, "1", "3");
+    defineArestaGrafo(&grafo, "3", "4");
 
 
     imprimeGrafo(&grafo);
