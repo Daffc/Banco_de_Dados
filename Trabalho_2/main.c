@@ -2,9 +2,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h> 
 #include "Grafo.h"
 
 #define LINE_SIZE 50
+
+
+
+void isolanEscalonamento(FILE *f, long int ini,long int fim){
+
+    char    linha[LINE_SIZE];
+
+    // REDEFINE POSIÇÃO PARA LINHA INICIAL DO ESCALONAMENTO.
+    fseek(f, ini, SEEK_SET);
+
+    // PERCORRE TODAS AS LINHAS DO ESCALONAMENTO.
+    while(fgets(linha, LINE_SIZE, f) != NULL && (ftell(f) <= fim + 1))
+    {
+        printf("%s", linha);
+    } 
+    rewind(f);
+    
+}
 
 int main(){
 
@@ -14,8 +33,17 @@ int main(){
     int     status;
     int     t_atual;
 
+    
+
 
     iniciaGrafo(&grafo);
+
+    int cont_commit = 0;
+    
+    FILE *copia_stdin = fdopen (dup (fileno (stdin)), "r");
+
+    long int esc_ini, esc_fim;
+    esc_ini = 0;
 
     // RECUPERANDO TODAS AS TRANSIÇÕES PARA CRIAÇÃO DO GRAFO
     while(fgets(linha, LINE_SIZE, stdin) != NULL){
@@ -26,43 +54,26 @@ int main(){
         // RECUPERANDO TRANSIÇÃO
         elemento = strtok(NULL," ");      
         verificaNovoVertice(&grafo, elemento);        
+
+        // RECUPERANDO OPERAÇÃO
+        elemento = strtok(NULL," ");
+
+        // VERIFICA SE É UM COMMIT
+        if(!strcmp(elemento, "C")){
+            cont_commit++;
+
+            // ISOLANDO ESCALONAMENTO ATUAL.
+            if(cont_commit == grafo.num_vertices){
+                esc_fim = ftell(stdin);
+                // TRATANDO DE ESCALONAMENTO ATUAL.
+                isolanEscalonamento(copia_stdin, esc_ini, esc_fim);
+                esc_ini = esc_fim;
+            }
+        }
     }
 
     iniciaMatrizGrafo(&grafo);
     imprimeGrafo(&grafo);
-
-    // REPOSICIONANDO PONTEIRO DE stdin AO INÍCIO.
-
-    // rewind(stdin);
-    // // RECUPERANDO TODAS AS TRANSIÇÕES PARA CRIAÇÃO DO GRAFO
-
-    // int v1, v2;
-    // FILE p_aux_1, p_aux_2;
-
-    // p_aux_1 = p_aux_2 = stdin;
-
-    // while(fgets(linha, LINE_SIZE, stdin) != NULL){
-    //     // DESCARTANDO TEMPO
-    //     elemento = strtok(linha," ");
-    //     printf("TEMPO: %d\n", atoi(elemento));
-
-    //     // RECUPERANDO TRANSIÇÃO
-    //     elemento = strtok(NULL," ");
-    //     v1 = atoi(elemento);
-
-    //     // RECUPERANDO OPERAÇÃO
-    //     elemento = strtok(NULL," ");
-    //     printf("OPERAÇÃO: %s\n", elemento);
-
-    //     if(! strcmpelemento = )
-        
-    //     // RECUPERANDO ALVO
-    //     elemento = strtok(NULL," ");
-    //     printf("ALVO: %s\n", elemento);       
-        
-    // }
-    // imprimeGrafo(&grafo);    
-
 
 
     defineArestaGrafo(&grafo, "1", "2");
