@@ -20,6 +20,64 @@ typedef struct comando{
     
 } Comando;
 
+int verificaVisao(Identificador sequencia_trans[], int num_trans, int ordem[]){
+    int i;
+
+    
+    for(i = 0; i < num_trans; i++)
+    {
+        for (i = 0; i < num_trans; i++){
+            printf("%s ", sequencia_trans[ordem[i]].id);
+        }
+        printf("\n");
+    }
+    
+}
+
+
+void permutaTransicoes(Identificador sequencia_trans[], int num_trans){
+    int i, 
+        j;
+    int ordenador[num_trans];
+    int ordem[num_trans];
+    int tmp;
+
+    //=========================================
+    //========== VERIFICAÇÃO POR VISÃO ========
+    //=========================================
+    for(i = 0; i < num_trans; i++)
+    {
+        ordenador[i] = 0;
+        ordem[i] = i;
+    }
+
+    verificaVisao(sequencia_trans, num_trans, ordem);
+
+    i = 0;
+    while(i < num_trans){
+        if (ordenador[i] < i){
+            if(i%2 == 0){
+                tmp = ordem[0];
+                ordem[0] = ordem[i];
+                ordem[i] = tmp;
+            }
+            else{
+                tmp = ordem[ordenador[i]];
+                ordem[ordenador[i]] = ordem[i];
+                ordem[i] = tmp;
+            }
+            verificaVisao(sequencia_trans, num_trans, ordem);
+            ordenador[i] += 1;
+            i = 0;
+        }
+        else{
+            ordenador[i] = 0;
+            i += 1;
+        }
+    }
+}
+
+
 
 void isolanEscalonamento(FILE *f, long int posi_ini, int linhas_esc){
 
@@ -67,9 +125,9 @@ void isolanEscalonamento(FILE *f, long int posi_ini, int linhas_esc){
     //     printf("ORDEM: %d, TRANSIÇÃO: %s, OPERAÇÃO: %c, ATRIBUTO: %c\n", comandos[i].ordem, comandos[i].transicao, comandos[i].operacao, comandos[i].atributo);
     // }
     /*!!!!!!!!!! REMOVER AO FINAL !!!!!!!!!!!!!!!!*/
-
     iniciaMatrizGrafo(&grafo);
     
+    //  PERCORRE TODAS AS LINHAS DO ESCALONAMENTO.
     for(i = 0; i < linhas_esc; i++)
     {
         for(j = i + 1; j < linhas_esc; j++){
@@ -83,14 +141,25 @@ void isolanEscalonamento(FILE *f, long int posi_ini, int linhas_esc){
                         (comandos[j].operacao == 'W') && (comandos[i].operacao == 'W')){
                     
                             defineArcoGrafo(&grafo, comandos[i].transicao, comandos[j].transicao);
-                            printf("%s -> %s\n", comandos[i].transicao, comandos[j].transicao);
+                            /*!!!!!!!!!! REMOVER AO FINAL !!!!!!!!!!!!!!!!*/
+                            // printf("%s -> %s\n", comandos[i].transicao, comandos[j].transicao);
+                            /*!!!!!!!!!! REMOVER AO FINAL !!!!!!!!!!!!!!!!*/
                     }              
             }
         }
     }
-    
-    imprimeGrafo(&grafo);
+
+    /*!!!!!!!!!! REMOVER AO FINAL !!!!!!!!!!!!!!!!*/
+    imprimeGrafo(&grafo);    
     printf("CICLO: %d\n", buscaCiclo(&grafo));
+    /*!!!!!!!!!! REMOVER AO FINAL !!!!!!!!!!!!!!!!*/
+
+    //==============================================================================
+    //========================== VERIFICAÇÃO POR VISÃO =============================
+    //==============================================================================
+
+    // DEFINE VETORES PARA GERAÇÃO DE VISÕES A PARTIR DA QUANTIDADE DE TRANSAÇÕES DO ESCALONAMENTO.
+    permutaTransicoes(grafo.identificadores, grafo.num_vertices);
 
     liberaGrafo(&grafo);
     
