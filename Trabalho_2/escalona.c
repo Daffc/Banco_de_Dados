@@ -158,10 +158,12 @@ int verificaVisao(Identificador sequencia_trans[], int num_trans, int ordem[], C
         }
     }
 
+    /*!!!!!!!!!! REMOVER AO FINAL !!!!!!!!!!!!!!!!*/
     // printf("\tLISTA:\n");
     // for(i = 0; i < cont_atributos; i++)
     //     printf("\t\tORDEM: %d, TRANSIÇÃO: %s, OPERAÇÃO: %c, ATRIBUTO: %c\n", lista_ultima_escrita_atributo[i].ordem, lista_ultima_escrita_atributo[i].transicao, lista_ultima_escrita_atributo[i].operacao, lista_ultima_escrita_atributo[i].atributo);
     // printf("\n");
+    /*!!!!!!!!!! REMOVER AO FINAL !!!!!!!!!!!!!!!!*/
 
     // PERCORRRE LISTA DE ULTIMO COMANDO DE ESCRITA POR ATRIBUTO.
     for(j = 0; j < cont_atributos; j++){
@@ -175,9 +177,11 @@ int verificaVisao(Identificador sequencia_trans[], int num_trans, int ordem[], C
                 else{
 
                     // CASO FALSE, "lista_ultima_escrita_atributo[j]" É ULTIMA ESCRITA EM "visao" MAS NÃO EM "comados", RETORNAR 0.
+                    /*!!!!!!!!!! REMOVER AO FINAL !!!!!!!!!!!!!!!!*/
                     // printf("\tERRO ESCRITA:\n");
                     // printf("\t\tORDEM: %d, TRANSIÇÃO: %s, OPERAÇÃO: %c, ATRIBUTO: %c\n", comandos[i].ordem, comandos[i].transicao, comandos[i].operacao, comandos[i].atributo);
-                    // return 0;
+                    /*!!!!!!!!!! REMOVER AO FINAL !!!!!!!!!!!!!!!!*/
+                    return 0;
                 }
             }
         }
@@ -316,7 +320,7 @@ void isolanEscalonamento(FILE *f, long int posi_ini, int linhas_esc, int ordem_e
     }
 
     /*!!!!!!!!!! REMOVER AO FINAL !!!!!!!!!!!!!!!!*/
-    // imprimeGrafo(&grafo);    
+    //  imprimeGrafo(&grafo);    
     /*!!!!!!!!!! REMOVER AO FINAL !!!!!!!!!!!!!!!!*/
 
     res_ciclo = buscaCiclo(&grafo);
